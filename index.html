@@ -11,27 +11,26 @@
     height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
     background: #000;
   }
 
-  /* Фон навсегда закреплён */
+  /* Фон всегда первый слой */
   #background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
-    background-size: cover;
-    filter: blur(4px); /* немного размыт */
-    z-index: -9999; /* всегда за всем контентом */
+    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') center/cover no-repeat;
+    filter: blur(4px);
+    z-index: -9999;
   }
 
   .screen {
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,15 +41,17 @@
 
   .button {
     padding: 15px 30px;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.95);
     border: none;
     border-radius: 25px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: transform 0.2s, background 0.2s;
+    transition: 0.2s;
     margin: 15px 0;
+    z-index: 1;
+    position: relative;
   }
 
   .button:hover {
@@ -126,7 +127,6 @@
     mainScreen.classList.remove('hidden');
   });
 
-  // Функция добавления новых фото
   function addPhoto(url){
     const container = document.getElementById('photoContainer');
     const img = document.createElement('img');
