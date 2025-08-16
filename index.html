@@ -8,6 +8,7 @@
   * {
     box-sizing: border-box;
   }
+
   body, html {
     margin: 0;
     padding: 0;
@@ -15,18 +16,19 @@
     width: 100%;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
-    background: #000;
-  }
-
-  .background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
     background-size: cover;
-    filter: blur(5px);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.4); /* полупрозрачный слой для затемнения */
+    backdrop-filter: blur(5px); /* размытие фона */
     z-index: -1;
   }
 
@@ -39,6 +41,7 @@
     flex-direction: column;
     transition: opacity 0.3s ease;
     padding: 10px;
+    background: transparent;
   }
 
   .hidden {
@@ -98,8 +101,6 @@
 </head>
 <body>
 
-<div class="background"></div>
-
 <!-- Главный экран -->
 <div id="mainScreen" class="screen">
   <button id="openAlbum" class="button">Перейти в альбом Усти</button>
@@ -108,7 +109,6 @@
 <!-- Экран с фотографиями -->
 <div id="photoScreen" class="screen hidden">
   <div class="photo-container" id="photoContainer">
-    <!-- Фотографии -->
     <img src="https://i.postimg.cc/2SLk2Rxp/photo-2025-05-28-21-33-24-6.jpg" alt="Фото Усти">
     <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото Усти">
     <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото Усти">
@@ -135,7 +135,6 @@
     mainScreen.classList.remove('hidden');
   });
 
-  // Функция для добавления новой фотки
   function addPhoto(url) {
     const photoContainer = document.getElementById('photoContainer');
     const img = document.createElement('img');
