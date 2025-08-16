@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; margin:0; padding:0; }
 
-  body, html {
+  html, body {
     height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
@@ -15,30 +15,30 @@
     background: #000;
   }
 
-  /* Фон всегда виден */
+  /* Фон навсегда закреплён */
   #background {
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
     background-size: cover;
-    filter: blur(4px);
-    z-index: -9999; /* максимально назад */
+    filter: blur(4px); /* немного размыт */
+    z-index: -9999; /* всегда за всем контентом */
   }
 
   .screen {
     position: relative;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
-  .hidden { display:none; }
+  .hidden { display: none; }
 
   .button {
     padding: 15px 30px;
@@ -49,7 +49,7 @@
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: 0.2s;
+    transition: transform 0.2s, background 0.2s;
     margin: 15px 0;
   }
 
@@ -62,20 +62,20 @@
 
   .photo-container {
     width: 95%;
-    max-width:700px;
-    height:85vh;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:10px 0;
+    max-width: 700px;
+    height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
   }
 
   .photo-container img {
-    width:100%;
-    margin:10px 0;
-    border-radius:12px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     transition: transform 0.2s;
   }
 
@@ -89,7 +89,7 @@
 </head>
 <body>
 
-<!-- Фон всегда первый слой -->
+<!-- Фон -->
 <div id="background"></div>
 
 <!-- Главный экран -->
@@ -126,6 +126,7 @@
     mainScreen.classList.remove('hidden');
   });
 
+  // Функция добавления новых фото
   function addPhoto(url){
     const container = document.getElementById('photoContainer');
     const img = document.createElement('img');
