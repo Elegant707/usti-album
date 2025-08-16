@@ -28,7 +28,7 @@
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     transition: 0.4s;
-    z-index: 10; /* кнопка поверх фона */
+    z-index: 10;
   }
 
   .button:hover {
@@ -51,56 +51,43 @@
 <button class="button">Перейти в альбом Усти</button>
 
 <script>
-  const body = document.body;
+const body = document.body;
 
-  const iconsData = [
-    (svg, size) => { // круг
-      const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
-      c.setAttribute("cx", size/2);
-      c.setAttribute("cy", size/2);
-      c.setAttribute("r", size/2-1);
-      c.setAttribute("stroke-width","1");
-      svg.appendChild(c);
-    },
-    (svg, size) => { // треугольник
-      const p = document.createElementNS("http://www.w3.org/2000/svg","path");
-      p.setAttribute("d", `M0 ${size} L${size/2} 0 L${size} ${size} Z`);
-      p.setAttribute("stroke-width","1");
-      svg.appendChild(p);
-    },
-    (svg, size) => { // крест
-      const p = document.createElementNS("http://www.w3.org/2000/svg","path");
-      p.setAttribute("d", `M0 0 L${size} ${size} M${size} 0 L0 ${size}`);
-      p.setAttribute("stroke-width","1");
-      svg.appendChild(p);
-    },
-    (svg, size) => { // линия
-      const p = document.createElementNS("http://www.w3.org/2000/svg","path");
-      p.setAttribute("d", `M0 ${size/2} H${size}`);
-      p.setAttribute("stroke-width","1");
-      svg.appendChild(p);
-    }
-  ];
+// Разные силуэты иконок
+const iconsData = [
+  (svg,size)=>{const c=document.createElementNS("http://www.w3.org/2000/svg","circle"); c.setAttribute("cx",size/2); c.setAttribute("cy",size/2); c.setAttribute("r",size/2-1); c.setAttribute("stroke-width","1"); svg.appendChild(c);}, // круг
+  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size} L${size/2} 0 L${size} ${size} Z`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // треугольник
+  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 0 L${size} ${size} M${size} 0 L0 ${size}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // крест
+  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size/2} H${size}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // линия
+  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M${size/2} 0 L${size*0.6} ${size*0.4} L${size*0.4} ${size*0.6} Z`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // маленькая звезда
+  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size*0.7} Q${size/2} ${-size*0.3} ${size} ${size*0.7}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // облачко
+];
 
-  const totalIcons = 1000;
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+// Настройка плотности
+const iconSpacing = 18; // расстояние между центрами
+const rows = Math.ceil(window.innerHeight / iconSpacing);
+const cols = Math.ceil(window.innerWidth / iconSpacing);
 
-  for(let i=0; i<totalIcons; i++){
-    const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
-    const size = Math.random() * 15 + 10; // размер 10-25px
+for(let y=0;y<rows;y++){
+  for(let x=0;x<cols;x++){
+    const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+    const size = Math.random()*12 + 8; // размеры 8-20px
     svg.setAttribute("class","icon");
-    svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+    svg.setAttribute("viewBox",`0 0 ${size} ${size}`);
     svg.style.width = `${size}px`;
     svg.style.height = `${size}px`;
-    svg.style.left = `${Math.random() * width}px`;
-    svg.style.top = `${Math.random() * height}px`;
+    // хаотичное смещение внутри ячейки
+    const offsetX = Math.random()*(iconSpacing-size);
+    const offsetY = Math.random()*(iconSpacing-size);
+    svg.style.left = `${x*iconSpacing + offsetX}px`;
+    svg.style.top = `${y*iconSpacing + offsetY}px`;
 
     const fn = iconsData[Math.floor(Math.random()*iconsData.length)];
-    fn(svg, size);
+    fn(svg,size);
 
     body.appendChild(svg);
   }
+}
 </script>
 
 </body>
