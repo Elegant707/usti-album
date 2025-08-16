@@ -13,9 +13,9 @@
     justify-content: center;
     align-items: center;
     background: linear-gradient(to bottom, #0d1b2a, #1b263b, #415a77);
-    font-family: Arial, sans-serif;
     overflow: hidden;
     position: relative;
+    font-family: Arial, sans-serif;
   }
 
   .button {
@@ -42,8 +42,6 @@
     position: absolute;
     fill: #7dd3fc;
     opacity: 0.4;
-    width: 20px;
-    height: 20px;
   }
 </style>
 </head>
@@ -54,27 +52,31 @@
 <script>
 const body = document.body;
 
-// SVG силуэты (пример)
+// Массив SVG рисунков
 const iconsSVG = [
-`<svg viewBox="0 0 64 64" class="icon"><path d="M32 4 C20 4 12 12 12 24 C12 36 32 60 32 60 C32 60 52 36 52 24 C52 12 44 4 32 4 Z"/></svg>`, // котик
-`<svg viewBox="0 0 64 64" class="icon"><path d="M20 32 C16 28 16 20 24 16 C32 12 40 20 40 28 C48 32 44 44 32 44 C20 44 20 32 20 32 Z"/></svg>`, // облако
-`<svg viewBox="0 0 64 64" class="icon"><path d="M32 4 L28 24 H36 L24 40 H40 L28 56 L36 36 H28 L40 20 H24 Z"/></svg>`, // молния
-`<svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="12"/></svg>` // солнце
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 2 C20 2 14 10 14 22 C14 34 32 62 32 62 C32 62 50 34 50 22 C50 10 44 2 32 2 Z"/></svg>`, // динозаврик
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 2 L28 32 H36 L24 50 H40 L28 62 L36 40 H28 L40 20 H24 Z"/></svg>`, // ракета
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 4 L28 28 H36 L24 48 H40 L28 60 L36 36 H28 L40 16 H24 Z"/></svg>`, // петарда
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 2 L36 16 L50 16 L38 28 L42 42 L32 34 L22 42 L26 28 L14 16 L28 16 Z"/></svg>` // фейерверк
 ];
 
-const totalIcons = 500;
+const totalIcons = 400; // количество рисунков
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-for(let i=0;i<totalIcons;i++){
+for(let i=0; i<totalIcons; i++){
   const div = document.createElement('div');
   div.innerHTML = iconsSVG[Math.floor(Math.random()*iconsSVG.length)];
   const svg = div.firstChild;
-  const size = Math.random() * 15 + 10; // размеры 10-25px
+
+  const size = Math.random()*25 + 15; // размеры 15-40px
   svg.style.width = `${size}px`;
   svg.style.height = `${size}px`;
-  svg.style.left = `${Math.random()*width}px`;
-  svg.style.top = `${Math.random()*height}px`;
+
+  // хаотичное распределение по экрану
+  svg.style.left = `${Math.random()*(width-size)}px`;
+  svg.style.top = `${Math.random()*(height-size)}px`;
+
   body.appendChild(svg);
 }
 </script>
