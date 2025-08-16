@@ -15,14 +15,14 @@
     background: #000;
   }
 
-  /* Фоновое изображение через <img> */
+  /* Фон через base64, всегда виден */
   #background {
     position: fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    object-fit: cover;
+    background: url('data:image/jpeg;base64,/*ЗДЕСЬ БУДЕТ ТВОЙ BASE64*/') center/cover no-repeat;
     filter: blur(4px);
     z-index: -9999;
   }
@@ -90,8 +90,8 @@
 </head>
 <body>
 
-<!-- Фон через <img> -->
-<img id="background" src="https://i.postimg.cc/SRG2Q0v1/Snowing.jpg" alt="Фон">
+<!-- Фон через base64 -->
+<div id="background"></div>
 
 <!-- Главный экран -->
 <div id="mainScreen" class="screen">
@@ -104,9 +104,6 @@
     <img src="https://i.postimg.cc/2SLk2Rxp/photo-2025-05-28-21-33-24-6.jpg" alt="Фото Усти">
     <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото Усти">
     <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото Усти">
-    <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото Усти">
-    <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото Усти">
-    <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото Усти">
   </div>
   <button id="backButton" class="button">Вернуться назад</button>
 </div>
