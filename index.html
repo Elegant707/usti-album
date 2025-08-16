@@ -16,10 +16,9 @@
     width: 100%;
     font-family: Arial, sans-serif;
     overflow: hidden;
-    background: #000;
   }
 
-  /* Фон всегда видимый, легкое размытие */
+  /* Фоновый див всегда виден и размыт */
   .background {
     position: fixed;
     top: 0;
@@ -29,8 +28,8 @@
     background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
     background-size: cover;
     filter: blur(5px);
-    opacity: 0.6; /* мягкое размытие */
-    z-index: -2; /* всегда за контентом */
+    opacity: 0.6;
+    z-index: -1; /* всегда за контентом */
   }
 
   .screen {
@@ -108,7 +107,7 @@
 </head>
 <body>
 
-<!-- Фоновый слой -->
+<!-- Фон -->
 <div class="background"></div>
 
 <!-- Главный экран -->
