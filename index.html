@@ -15,11 +15,11 @@
     height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
-    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
-    background-size: cover;
+    overflow: hidden;
+    background: #000;
   }
 
+  /* Фон с размитием и затемнением, оптимизировано */
   body::before {
     content: '';
     position: fixed;
@@ -27,21 +27,23 @@
     left:0;
     width:100%;
     height:100%;
-    background: rgba(0,0,0,0.4); /* полупрозрачный слой для затемнения */
-    backdrop-filter: blur(5px); /* размытие фона */
+    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(8px);
+    opacity: 0.7;
     z-index: -1;
   }
 
   .screen {
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    transition: opacity 0.3s ease;
     padding: 10px;
     background: transparent;
+    overflow: hidden;
   }
 
   .hidden {
@@ -50,14 +52,14 @@
 
   .button {
     padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 25px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: 0.3s;
+    transition: transform 0.2s, background 0.2s;
     margin: 15px 0;
   }
 
@@ -69,7 +71,7 @@
   }
 
   .photo-container {
-    width: 100%;
+    width: 95%;
     max-width: 700px;
     display: flex;
     flex-direction: column;
@@ -85,8 +87,14 @@
     margin: 10px 0;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
   }
 
+  .photo-container img:hover {
+    transform: scale(1.02);
+  }
+
+  /* Адаптация под мобильные */
   @media (max-width: 600px) {
     .button {
       padding: 12px 25px;
@@ -135,6 +143,7 @@
     mainScreen.classList.remove('hidden');
   });
 
+  // Функция добавления новой фотки
   function addPhoto(url) {
     const photoContainer = document.getElementById('photoContainer');
     const img = document.createElement('img');
