@@ -5,13 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Альбом Усти</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; margin:0; padding:0; }
 
   body, html {
-    margin: 0;
-    padding: 0;
     height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
@@ -19,46 +15,41 @@
     background: #000;
   }
 
-  /* Фон */
-  .background {
+  /* Фон всегда виден */
+  #background {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
     background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
     background-size: cover;
-    filter: blur(4px); /* немного размыт */
-    opacity: 1; /* убрали белый засвет */
-    z-index: -1; /* за контентом */
+    filter: blur(4px);
+    z-index: -9999; /* максимально назад */
   }
 
   .screen {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-    background: transparent;
-    overflow: hidden;
+    position: relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
   }
 
-  .hidden {
-    display: none;
-  }
+  .hidden { display:none; }
 
   .button {
     padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255,255,255,0.9);
     border: none;
     border-radius: 25px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: transform 0.2s, background 0.2s;
+    transition: 0.2s;
     margin: 15px 0;
   }
 
@@ -71,43 +62,35 @@
 
   .photo-container {
     width: 95%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-    height: 85vh;
-    padding: 10px 0;
+    max-width:700px;
+    height:85vh;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:10px 0;
   }
 
   .photo-container img {
-    width: 100%;
-    height: auto;
-    margin: 10px 0;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    width:100%;
+    margin:10px 0;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.4);
     transition: transform 0.2s;
   }
 
-  .photo-container img:hover {
-    transform: scale(1.02);
-  }
+  .photo-container img:hover { transform: scale(1.02); }
 
-  @media (max-width: 600px) {
-    .button {
-      padding: 12px 25px;
-      font-size: 16px;
-    }
-    .photo-container {
-      max-width: 95%;
-      height: 80vh;
-    }
+  @media(max-width:600px){
+    .button { padding:12px 25px; font-size:16px; }
+    .photo-container { max-width:95%; height:80vh; }
   }
 </style>
 </head>
 <body>
 
-<div class="background"></div>
+<!-- Фон всегда первый слой -->
+<div id="background"></div>
 
 <!-- Главный экран -->
 <div id="mainScreen" class="screen">
@@ -143,11 +126,11 @@
     mainScreen.classList.remove('hidden');
   });
 
-  function addPhoto(url) {
-    const photoContainer = document.getElementById('photoContainer');
+  function addPhoto(url){
+    const container = document.getElementById('photoContainer');
     const img = document.createElement('img');
     img.src = url;
-    photoContainer.appendChild(img);
+    container.appendChild(img);
   }
 </script>
 
