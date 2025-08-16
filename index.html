@@ -40,9 +40,10 @@
 
   .icon {
     position: absolute;
-    stroke: #7dd3fc;
-    fill: none;
-    opacity: 0.3;
+    fill: #7dd3fc;
+    opacity: 0.4;
+    width: 20px;
+    height: 20px;
   }
 </style>
 </head>
@@ -53,40 +54,28 @@
 <script>
 const body = document.body;
 
-// Разные силуэты иконок
-const iconsData = [
-  (svg,size)=>{const c=document.createElementNS("http://www.w3.org/2000/svg","circle"); c.setAttribute("cx",size/2); c.setAttribute("cy",size/2); c.setAttribute("r",size/2-1); c.setAttribute("stroke-width","1"); svg.appendChild(c);}, // круг
-  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size} L${size/2} 0 L${size} ${size} Z`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // треугольник
-  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 0 L${size} ${size} M${size} 0 L0 ${size}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // крест
-  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size/2} H${size}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // линия
-  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M${size/2} 0 L${size*0.6} ${size*0.4} L${size*0.4} ${size*0.6} Z`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // маленькая звезда
-  (svg,size)=>{const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M0 ${size*0.7} Q${size/2} ${-size*0.3} ${size} ${size*0.7}`); p.setAttribute("stroke-width","1"); svg.appendChild(p);}, // облачко
+// SVG силуэты (пример)
+const iconsSVG = [
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 4 C20 4 12 12 12 24 C12 36 32 60 32 60 C32 60 52 36 52 24 C52 12 44 4 32 4 Z"/></svg>`, // котик
+`<svg viewBox="0 0 64 64" class="icon"><path d="M20 32 C16 28 16 20 24 16 C32 12 40 20 40 28 C48 32 44 44 32 44 C20 44 20 32 20 32 Z"/></svg>`, // облако
+`<svg viewBox="0 0 64 64" class="icon"><path d="M32 4 L28 24 H36 L24 40 H40 L28 56 L36 36 H28 L40 20 H24 Z"/></svg>`, // молния
+`<svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="12"/></svg>` // солнце
 ];
 
-// Настройка плотности
-const iconSpacing = 18; // расстояние между центрами
-const rows = Math.ceil(window.innerHeight / iconSpacing);
-const cols = Math.ceil(window.innerWidth / iconSpacing);
+const totalIcons = 500;
+const width = window.innerWidth;
+const height = window.innerHeight;
 
-for(let y=0;y<rows;y++){
-  for(let x=0;x<cols;x++){
-    const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
-    const size = Math.random()*12 + 8; // размеры 8-20px
-    svg.setAttribute("class","icon");
-    svg.setAttribute("viewBox",`0 0 ${size} ${size}`);
-    svg.style.width = `${size}px`;
-    svg.style.height = `${size}px`;
-    // хаотичное смещение внутри ячейки
-    const offsetX = Math.random()*(iconSpacing-size);
-    const offsetY = Math.random()*(iconSpacing-size);
-    svg.style.left = `${x*iconSpacing + offsetX}px`;
-    svg.style.top = `${y*iconSpacing + offsetY}px`;
-
-    const fn = iconsData[Math.floor(Math.random()*iconsData.length)];
-    fn(svg,size);
-
-    body.appendChild(svg);
-  }
+for(let i=0;i<totalIcons;i++){
+  const div = document.createElement('div');
+  div.innerHTML = iconsSVG[Math.floor(Math.random()*iconsSVG.length)];
+  const svg = div.firstChild;
+  const size = Math.random() * 15 + 10; // размеры 10-25px
+  svg.style.width = `${size}px`;
+  svg.style.height = `${size}px`;
+  svg.style.left = `${Math.random()*width}px`;
+  svg.style.top = `${Math.random()*height}px`;
+  body.appendChild(svg);
 }
 </script>
 
