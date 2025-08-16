@@ -14,7 +14,6 @@
     font-family: Arial, sans-serif;
   }
 
-  /* Фон отдельно */
   .background {
     position: absolute;
     top: 0;
@@ -65,9 +64,19 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
   }
 
+  .photo-container {
+    width: 90%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+
   .photo-container img {
     max-width: 90%;
-    max-height: 80%;
+    margin: 15px 0;
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.5);
   }
@@ -82,10 +91,15 @@
   <button id="openAlbum" class="button">Перейти в альбом Усти</button>
 </div>
 
-<!-- Экран с фотографией -->
+<!-- Экран с фотографиями -->
 <div id="photoScreen" class="screen hidden">
-  <div class="photo-container">
+  <div class="photo-container" id="photoContainer">
+    <!-- Первая фотка -->
     <img src="https://i.postimg.cc/2SLk2Rxp/photo-2025-05-28-21-33-24-6.jpg" alt="Фото Усти">
+    <!-- Вторая фотка -->
+    <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото Усти">
+    <!-- Третья фотка -->
+    <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото Усти">
   </div>
   <button id="backButton" class="button">Вернуться назад</button>
 </div>
@@ -96,17 +110,23 @@
   const openAlbum = document.getElementById('openAlbum');
   const backButton = document.getElementById('backButton');
 
-  // Показать фото
   openAlbum.addEventListener('click', () => {
     mainScreen.classList.add('hidden');
     photoScreen.classList.remove('hidden');
   });
 
-  // Вернуться назад
   backButton.addEventListener('click', () => {
     photoScreen.classList.add('hidden');
     mainScreen.classList.remove('hidden');
   });
+
+  // Функция для добавления новой фотки
+  function addPhoto(url) {
+    const photoContainer = document.getElementById('photoContainer');
+    const img = document.createElement('img');
+    img.src = url;
+    photoContainer.appendChild(img);
+  }
 </script>
 
 </body>
