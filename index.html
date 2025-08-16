@@ -1,69 +1,113 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Альбом Усти</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Альбом Усти</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
 
-    /* Фон отдельно */
-    .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
-      background-size: cover;
-      filter: blur(5px);
-      z-index: 0;
-    }
+  /* Фон отдельно */
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(5px);
+    z-index: 0;
+  }
 
-    /* Контент поверх фона */
-    .content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
+  .screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
 
-    .button {
-      padding: 20px 40px;
-      background: rgba(255, 255, 255, 0.8);
-      border: none;
-      border-radius: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: 0.4s;
-    }
+  .hidden {
+    display: none;
+  }
 
-    .button:hover {
-      transform: scale(1.08);
-      background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
-      color: white;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    }
-  </style>
+  .button {
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.4s;
+    margin-top: 20px;
+  }
+
+  .button:hover {
+    transform: scale(1.08);
+    background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  }
+
+  .photo-container img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  }
+</style>
 </head>
 <body>
 
-  <div class="background"></div>
+<div class="background"></div>
 
-  <div class="content">
-    <button class="button">Перейти в альбом Усти</button>
+<!-- Главный экран -->
+<div id="mainScreen" class="screen">
+  <button id="openAlbum" class="button">Перейти в альбом Усти</button>
+</div>
+
+<!-- Экран с фотографией -->
+<div id="photoScreen" class="screen hidden">
+  <div class="photo-container">
+    <img src="https://i.postimg.cc/2SLk2Rxp/photo-2025-05-28-21-33-24-6.jpg" alt="Фото Усти">
   </div>
+  <button id="backButton" class="button">Вернуться назад</button>
+</div>
+
+<script>
+  const mainScreen = document.getElementById('mainScreen');
+  const photoScreen = document.getElementById('photoScreen');
+  const openAlbum = document.getElementById('openAlbum');
+  const backButton = document.getElementById('backButton');
+
+  // Показать фото
+  openAlbum.addEventListener('click', () => {
+    mainScreen.classList.add('hidden');
+    photoScreen.classList.remove('hidden');
+  });
+
+  // Вернуться назад
+  backButton.addEventListener('click', () => {
+    photoScreen.classList.add('hidden');
+    mainScreen.classList.remove('hidden');
+  });
+</script>
 
 </body>
 </html>
