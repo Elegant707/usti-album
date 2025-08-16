@@ -5,75 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Альбом Усти</title>
   <style>
-    body {
+    body, html {
       margin: 0;
-      height: 100vh;
-      width: 100vw;
+      padding: 0;
+      height: 100%;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(to bottom, #0d1b2a, #1b263b, #415a77);
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      position: relative;
+      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center fixed;
+      background-size: cover;
+      filter: blur(5px);
+    }
+
+    .content {
+      position: absolute;
+      text-align: center;
+      z-index: 1;
     }
 
     .button {
       padding: 20px 40px;
-      background: white;
+      background: rgba(255, 255, 255, 0.8);
       border: none;
       border-radius: 30px;
       font-size: 20px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       transition: 0.4s;
-      z-index: 10;
     }
 
     .button:hover {
       transform: scale(1.08);
       background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
       color: white;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
-
-    .icon {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      opacity: 0.4;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
 <body>
 
-<button class="button">Перейти в альбом Усти</button>
-
-<script>
-  const body = document.body;
-  const icons = [
-    'https://www.svgrepo.com/show/36574/dinosaur.svg',
-    'https://www.svgrepo.com/show/36575/rocket.svg',
-    'https://www.svgrepo.com/show/36576/fireworks.svg',
-    'https://www.svgrepo.com/show/36577/cat.svg',
-    'https://www.svgrepo.com/show/36578/cloud.svg'
-  ];
-
-  const totalIcons = 500;
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  for (let i = 0; i < totalIcons; i++) {
-    const img = document.createElement('img');
-    img.src = icons[Math.floor(Math.random() * icons.length)];
-    img.classList.add('icon');
-    img.style.left = `${Math.random() * (width - 30)}px`;
-    img.style.top = `${Math.random() * (height - 30)}px`;
-    img.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
-    body.appendChild(img);
-  }
-</script>
+  <div class="content">
+    <button class="button">Перейти в альбом Усти</button>
+  </div>
 
 </body>
 </html>
