@@ -1,139 +1,133 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Альбом Усти</title>
-<style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Галерея</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
 
-  .background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
-    background-size: cover;
-    filter: blur(5px);
-    z-index: 0;
-  }
+    /* --- Фон --- */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
+      background-size: cover;
+      filter: blur(4px);
+      z-index: 0;
+    }
 
-  .screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1;
-    transition: opacity 0.3s ease;
-  }
+    /* --- Экран приветствия --- */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1;
+    }
 
-  .hidden {
-    display: none;
-  }
+    .hidden {
+      display: none;
+    }
 
-  .button {
-    padding: 20px 40px;
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 30px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: 0.4s;
-    margin-top: 20px;
-  }
+    .button {
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
+      border-radius: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: 0.4s;
+      margin-top: 20px;
+    }
 
-  .button:hover {
-    transform: scale(1.08);
-    background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
-    color: white;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  }
+    .button:hover {
+      transform: scale(1.08);
+      background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
+      color: white;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
 
-  .photo-container {
-    width: 90%;
-    max-width: 900px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-    padding: 20px 0;
-  }
+    /* --- Контейнер с фото (3 в ряд) --- */
+    .photo-container {
+      position: relative;
+      z-index: 1;
+      width: 95%;
+      max-width: 1300px;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      overflow-y: auto;
+      padding: 30px;
+      justify-items: center;
+    }
 
-  .photo-container img {
-    max-width: 90%;
-    margin: 15px 0;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-  }
-</style>
+    .photo-container img {
+      width: 100%;
+      max-width: 350px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      object-fit: cover;
+    }
+
+    /* --- Для телефонов (1 в ряд) и планшетов (2 в ряд) --- */
+    @media (max-width: 900px) {
+      .photo-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .photo-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Фон -->
+  <div class="background"></div>
 
-<div class="background"></div>
-
-<!-- Главный экран -->
-<div id="mainScreen" class="screen">
-  <button id="openAlbum" class="button">Перейти в альбом Усти</button>
-</div>
-
-<!-- Экран с фотографиями -->
-<div id="photoScreen" class="screen hidden">
-  <div class="photo-container" id="photoContainer">
-    <!-- Первая фотка -->
-    <img src="https://i.postimg.cc/2SLk2Rxp/photo-2025-05-28-21-33-24-6.jpg" alt="Фото Усти">
-    <!-- Вторая фотка -->
-    <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото Усти">
-    <!-- Третья фотка -->
-    <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото Усти">
-    <!-- Четвёртая фотка -->
-    <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото Усти">
-    <!-- Пятая фотка -->
-    <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото Усти">
-    <!-- Шестая фотка -->
-    <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото Усти">
+  <!-- Приветственный экран -->
+  <div id="welcome" class="screen">
+    <button class="button" onclick="startGallery()">Открыть галерею</button>
   </div>
-  <button id="backButton" class="button">Вернуться назад</button>
-</div>
 
-<script>
-  const mainScreen = document.getElementById('mainScreen');
-  const photoScreen = document.getElementById('photoScreen');
-  const openAlbum = document.getElementById('openAlbum');
-  const backButton = document.getElementById('backButton');
+  <!-- Галерея -->
+  <div id="gallery" class="hidden">
+    <div class="photo-container">
+      <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
+      <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото 2">
+      <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
+      <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
+      <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
+      <!-- Сюда можно добавлять новые -->
+    </div>
+  </div>
 
-  openAlbum.addEventListener('click', () => {
-    mainScreen.classList.add('hidden');
-    photoScreen.classList.remove('hidden');
-  });
-
-  backButton.addEventListener('click', () => {
-    photoScreen.classList.add('hidden');
-    mainScreen.classList.remove('hidden');
-  });
-
-  // Функция для добавления новой фотки
-  function addPhoto(url) {
-    const photoContainer = document.getElementById('photoContainer');
-    const img = document.createElement('img');
-    img.src = url;
-    photoContainer.appendChild(img);
-  }
-</script>
-
+  <script>
+    function startGallery() {
+      document.getElementById('welcome').classList.add('hidden');
+      document.getElementById('gallery').classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>
