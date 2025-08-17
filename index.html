@@ -6,13 +6,13 @@
   <title>Альбом Усти</title>
   <style>
     :root{
-      --cat-size: 110px;         /* размер кота на ПК */
-      --cat-gap: 24px;           /* отступы вокруг кота */
+      --cat-size: 110px;
+      --cat-gap: 24px;
     }
 
     @media (max-width: 600px){
       :root{
-        --cat-size: 80px;        /* размер кота на мобилках */
+        --cat-size: 80px;
         --cat-gap: 16px;
       }
     }
@@ -22,7 +22,6 @@
       font-family: Arial, sans-serif;
     }
 
-    /* Фон */
     .background{
       position: fixed;
       inset: 0;
@@ -31,7 +30,6 @@
       z-index: 0;
     }
 
-    /* Приветственный экран */
     .screen{
       position: relative;
       z-index: 2;
@@ -64,8 +62,6 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
 
-    /* Галерея-обёртка: даём «безопасную зону» слева-снизу под кота,
-       чтобы он НИКОГО не перекрывал и его тоже не перекрывали */
     #gallery{
       position: relative;
       z-index: 2;
@@ -73,7 +69,6 @@
       padding-bottom: calc(var(--cat-size) + var(--cat-gap));
     }
 
-    /* Сетка галереи: 3 в ряд (адаптивно) */
     .photo-container{
       width: 95%;
       max-width: 1300px;
@@ -98,7 +93,6 @@
       .photo-container{ grid-template-columns: 1fr; }
     }
 
-    /* Кнопка «Вернуться назад» снизу под сеткой */
     .back-button-container{
       display: flex;
       justify-content: center;
@@ -107,18 +101,19 @@
       z-index: 2;
     }
 
-    /* --- Виджет кота (всегда в левом нижнем углу) --- */
+    /* Виджет кота */
     .cat-widget{
       position: fixed;
       left: var(--cat-gap);
       bottom: var(--cat-gap);
-      width: calc(var(--cat-size) + 140px); /* ширина с пузырём "Meow" */
+      width: calc(var(--cat-size) + 140px);
       height: var(--cat-size);
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      z-index: 5;              /* выше всего контента, кроме модалок */
-      pointer-events: none;    /* по умолчанию НЕ ловит клики... */
+      z-index: 5;
+      pointer-events: none;
+      flex-direction: column-reverse; /* текст сверху котика */
     }
     .cat-img{
       width: var(--cat-size);
@@ -126,7 +121,7 @@
       object-fit: contain;
       filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
       cursor: pointer;
-      pointer-events: auto;    /* ...но сам кот кликабелен */
+      pointer-events: auto;
       transition: transform .15s ease;
       user-select: none;
     }
@@ -157,13 +152,26 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+
+    /* Переливающийся текст */
+    .cat-text{
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #7dd3fc, #c4b5fd, #f5a7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: text-shimmer 3s linear infinite;
+      user-select: none;
+    }
+    @keyframes text-shimmer{
+      0%{ background-position: 0% }
+      100%{ background-position: 200% }
+    }
   </style>
 </head>
 <body>
-  <!-- Фон -->
   <div class="background"></div>
 
-  <!-- Приветственный экран -->
   <div id="welcome" class="screen">
     <h1 style="color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,.7); margin-bottom:14px;">
       Добро пожаловать!
@@ -171,7 +179,6 @@
     <button class="button" onclick="startGallery()">Перейти в альбом Усти</button>
   </div>
 
-  <!-- Галерея -->
   <div id="gallery" class="hidden">
     <div class="photo-container">
       <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
@@ -179,7 +186,6 @@
       <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
       <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
       <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
-      <!-- Добавляй сюда новые -->
     </div>
 
     <div class="back-button-container">
@@ -187,19 +193,14 @@
     </div>
   </div>
 
-  <!-- Виджет кота (замени src на своё изображение/BASE64) -->
+  <!-- Кот и текст -->
   <div id="catWidget" class="cat-widget">
-    <img
-      id="catImage"
-      class="cat-img"
-      alt="Кот"
-      src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"
-    />
+    <div class="cat-text">погладь меня</div>
+    <img id="catImage" class="cat-img" alt="Кот" src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"/>
     <div class="meow-bubble">Meow</div>
   </div>
 
   <script>
-    // Переходы экранов
     function startGallery(){
       document.getElementById('welcome').classList.add('hidden');
       document.getElementById('gallery').classList.remove('hidden');
@@ -209,26 +210,16 @@
       document.getElementById('welcome').classList.remove('hidden');
     }
 
-    // Анимация кота + показ "Meow"
     const catWidget = document.getElementById('catWidget');
     const catImg = document.getElementById('catImage');
 
     catImg.addEventListener('click', () => {
-      // триггерим класс на короткое время
       catWidget.classList.add('animate');
       clearTimeout(window.__meowTO);
       window.__meowTO = setTimeout(() => {
         catWidget.classList.remove('animate');
       }, 900);
     });
-
-    // ===== Как заменить картинку кота на свою (текст/ссылка/base64) =====
-    // 1) Когда пришлёшь «фотку кота в виде текста» (data:image/...;base64,AAA...),
-    //    просто вставь её сюда вместо catSrc:
-    // const catSrc = "data:image/png;base64,ВАШ_ДЛИННЫЙ_BASE64";
-    // 2) Или вставь обычную ссылку: const catSrc = "https://example.com/cat.png";
-    // 3) Затем раскомментируй строку ниже:
-    // document.getElementById('catImage').src = catSrc;
   </script>
 </body>
 </html>
