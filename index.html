@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Галерея</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Альбом Усти</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+    :root{
+      --cat-size: 110px;         /* размер кота на ПК */
+      --cat-gap: 24px;           /* отступы вокруг кота */
+    }
+
+    @media (max-width: 600px){
+      :root{
+        --cat-size: 80px;        /* размер кота на мобилках */
+        --cat-gap: 16px;
+      }
+    }
+
+    html, body{
+      margin:0; padding:0;
       font-family: Arial, sans-serif;
     }
 
-    /* --- Фон --- */
-    .background {
+    /* Фон */
+    .background{
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center;
-      background-size: cover;
+      inset: 0;
+      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') center/cover no-repeat;
       filter: blur(4px);
       z-index: 0;
     }
 
-    /* --- Экран приветствия --- */
-    .screen {
+    /* Приветственный экран */
+    .screen{
       position: relative;
       z-index: 2;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -38,76 +43,119 @@
       text-align: center;
     }
 
-    .hidden {
-      display: none;
-    }
+    .hidden{ display:none; }
 
-    .button {
+    .button{
       padding: 15px 30px;
-      background: rgba(255, 255, 255, 0.85);
-      border: none;
+      background: rgba(255,255,255,0.85);
+      border: 0;
       border-radius: 30px;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: .25s;
       margin: 10px;
     }
-
-    .button:hover {
-      transform: scale(1.08);
-      background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
-      color: white;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    .button:hover{
+      transform: scale(1.06);
+      background: linear-gradient(90deg,#7dd3fc,#c4b5fd);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
 
-    /* --- Галерея (3 в ряд) --- */
-    .photo-container {
+    /* Галерея-обёртка: даём «безопасную зону» слева-снизу под кота,
+       чтобы он НИКОГО не перекрывал и его тоже не перекрывали */
+    #gallery{
+      position: relative;
+      z-index: 2;
+      padding-left: calc(var(--cat-size) + var(--cat-gap));
+      padding-bottom: calc(var(--cat-size) + var(--cat-gap));
+    }
+
+    /* Сетка галереи: 3 в ряд (адаптивно) */
+    .photo-container{
       width: 95%;
       max-width: 1300px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      padding: 30px;
+      padding: 30px 30px 10px;
       justify-items: center;
-      margin: 0 auto;
     }
-
-    .photo-container img {
+    .photo-container img{
       width: 100%;
       max-width: 350px;
       border-radius: 15px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
       object-fit: cover;
     }
-
-    /* --- Галерея контейнер --- */
-    #gallery {
-      position: relative;
-      z-index: 2; /* поднимаем над фоном */
+    @media (max-width: 900px){
+      .photo-container{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px){
+      .photo-container{ grid-template-columns: 1fr; }
     }
 
-    /* --- Контейнер кнопки снизу --- */
-    .back-button-container {
+    /* Кнопка «Вернуться назад» снизу под сеткой */
+    .back-button-container{
       display: flex;
       justify-content: center;
-      margin: 30px 0;
+      margin: 24px 0 32px;
       position: relative;
-      z-index: 3;
+      z-index: 2;
     }
 
-    /* --- Для телефонов и планшетов --- */
-    @media (max-width: 900px) {
-      .photo-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    /* --- Виджет кота (всегда в левом нижнем углу) --- */
+    .cat-widget{
+      position: fixed;
+      left: var(--cat-gap);
+      bottom: var(--cat-gap);
+      width: calc(var(--cat-size) + 140px); /* ширина с пузырём "Meow" */
+      height: var(--cat-size);
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      z-index: 5;              /* выше всего контента, кроме модалок */
+      pointer-events: none;    /* по умолчанию НЕ ловит клики... */
+    }
+    .cat-img{
+      width: var(--cat-size);
+      height: var(--cat-size);
+      object-fit: contain;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
+      cursor: pointer;
+      pointer-events: auto;    /* ...но сам кот кликабелен */
+      transition: transform .15s ease;
+      user-select: none;
+    }
+    .cat-widget.animate .cat-img{
+      animation: cat-bounce .6s ease;
+    }
+    @keyframes cat-bounce{
+      0%{ transform: translateY(0) rotate(0deg) }
+      30%{ transform: translateY(-10px) rotate(-4deg) }
+      60%{ transform: translateY(0) rotate(2deg) }
+      100%{ transform: translateY(0) rotate(0deg) }
     }
 
-    @media (max-width: 600px) {
-      .photo-container {
-        grid-template-columns: 1fr;
-      }
+    .meow-bubble{
+      align-self: center;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.92);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      transform: translateY(8px) scale(.95);
+      opacity: 0;
+      transition: .2s ease;
+      pointer-events: none;
+    }
+    .cat-widget.animate .meow-bubble{
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   </style>
 </head>
@@ -117,7 +165,9 @@
 
   <!-- Приветственный экран -->
   <div id="welcome" class="screen">
-    <h1 style="color:white; text-shadow: 2px 2px 6px black;">Добро пожаловать!</h1>
+    <h1 style="color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,.7); margin-bottom:14px;">
+      Добро пожаловать!
+    </h1>
     <button class="button" onclick="startGallery()">Перейти в альбом Усти</button>
   </div>
 
@@ -129,24 +179,56 @@
       <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
       <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
       <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
+      <!-- Добавляй сюда новые -->
     </div>
 
-    <!-- Кнопка снизу -->
     <div class="back-button-container">
       <button class="button" onclick="goBack()">Вернуться назад</button>
     </div>
   </div>
 
+  <!-- Виджет кота (замени src на своё изображение/BASE64) -->
+  <div id="catWidget" class="cat-widget">
+    <img
+      id="catImage"
+      class="cat-img"
+      alt="Кот"
+      src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"
+    />
+    <div class="meow-bubble">Meow</div>
+  </div>
+
   <script>
-    function startGallery() {
+    // Переходы экранов
+    function startGallery(){
       document.getElementById('welcome').classList.add('hidden');
       document.getElementById('gallery').classList.remove('hidden');
     }
-
-    function goBack() {
+    function goBack(){
       document.getElementById('gallery').classList.add('hidden');
       document.getElementById('welcome').classList.remove('hidden');
     }
+
+    // Анимация кота + показ "Meow"
+    const catWidget = document.getElementById('catWidget');
+    const catImg = document.getElementById('catImage');
+
+    catImg.addEventListener('click', () => {
+      // триггерим класс на короткое время
+      catWidget.classList.add('animate');
+      clearTimeout(window.__meowTO);
+      window.__meowTO = setTimeout(() => {
+        catWidget.classList.remove('animate');
+      }, 900);
+    });
+
+    // ===== Как заменить картинку кота на свою (текст/ссылка/base64) =====
+    // 1) Когда пришлёшь «фотку кота в виде текста» (data:image/...;base64,AAA...),
+    //    просто вставь её сюда вместо catSrc:
+    // const catSrc = "data:image/png;base64,ВАШ_ДЛИННЫЙ_BASE64";
+    // 2) Или вставь обычную ссылку: const catSrc = "https://example.com/cat.png";
+    // 3) Затем раскомментируй строку ниже:
+    // document.getElementById('catImage').src = catSrc;
   </script>
 </body>
 </html>
