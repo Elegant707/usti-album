@@ -10,7 +10,6 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      overflow: hidden;
       font-family: Arial, sans-serif;
     }
 
@@ -46,7 +45,7 @@
     }
 
     .button {
-      padding: 20px 40px;
+      padding: 15px 30px;
       background: rgba(255, 255, 255, 0.85);
       border: none;
       border-radius: 30px;
@@ -54,8 +53,8 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: 0.4s;
-      margin-top: 20px;
+      transition: 0.3s;
+      margin: 10px;
     }
 
     .button:hover {
@@ -65,19 +64,20 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
     }
 
-    /* --- Контейнер с фото (3 в ряд) --- */
+    /* --- Галерея (3 в ряд) --- */
     .photo-container {
       position: relative;
       z-index: 1;
       width: 95%;
       max-width: 1300px;
-      height: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      overflow-y: auto;
       padding: 30px;
       justify-items: center;
+      margin: 0 auto;
+      overflow-y: auto;
+      height: 100vh;
     }
 
     .photo-container img {
@@ -88,7 +88,7 @@
       object-fit: cover;
     }
 
-    /* --- Для телефонов (1 в ряд) и планшетов (2 в ряд) --- */
+    /* --- Для телефонов и планшетов --- */
     @media (max-width: 900px) {
       .photo-container {
         grid-template-columns: repeat(2, 1fr);
@@ -108,18 +108,20 @@
 
   <!-- Приветственный экран -->
   <div id="welcome" class="screen">
+    <h1 style="color:white; text-shadow: 2px 2px 6px black;">Добро пожаловать!</h1>
     <button class="button" onclick="startGallery()">Открыть галерею</button>
   </div>
 
   <!-- Галерея -->
   <div id="gallery" class="hidden">
+    <button class="button" onclick="goBack()">Назад</button>
     <div class="photo-container">
       <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
       <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото 2">
       <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
       <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
       <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
-      <!-- Сюда можно добавлять новые -->
+      <!-- Добавляй сюда новые -->
     </div>
   </div>
 
@@ -127,6 +129,11 @@
     function startGallery() {
       document.getElementById('welcome').classList.add('hidden');
       document.getElementById('gallery').classList.remove('hidden');
+    }
+
+    function goBack() {
+      document.getElementById('gallery').classList.add('hidden');
+      document.getElementById('welcome').classList.remove('hidden');
     }
   </script>
 </body>
