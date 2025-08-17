@@ -101,19 +101,17 @@
       z-index: 2;
     }
 
-    /* Виджет кота */
+    /* Котик фиксирован в левом нижнем углу */
     .cat-widget{
       position: fixed;
       left: var(--cat-gap);
       bottom: var(--cat-gap);
-      width: calc(var(--cat-size) + 140px);
-      height: var(--cat-size);
       display: flex;
-      align-items: flex-end;
-      gap: 10px;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       z-index: 5;
       pointer-events: none;
-      flex-direction: column-reverse; /* текст сверху котика */
     }
     .cat-img{
       width: var(--cat-size);
@@ -136,7 +134,6 @@
     }
 
     .meow-bubble{
-      align-self: center;
       white-space: nowrap;
       background: rgba(255,255,255,0.92);
       border-radius: 12px;
@@ -145,7 +142,7 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.25);
       transform: translateY(8px) scale(.95);
       opacity: 0;
-      transition: .2s ease;
+      transition: .15s ease;
       pointer-events: none;
     }
     .cat-widget.animate .meow-bubble{
@@ -153,7 +150,7 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Переливающийся текст */
+    /* Текст над котиком */
     .cat-text{
       font-size: 18px;
       font-weight: bold;
@@ -162,6 +159,9 @@
       -webkit-text-fill-color: transparent;
       animation: text-shimmer 3s linear infinite;
       user-select: none;
+      pointer-events: none;
+      margin-bottom: 4px;
+      text-align: center;
     }
     @keyframes text-shimmer{
       0%{ background-position: 0% }
@@ -214,11 +214,16 @@
     const catImg = document.getElementById('catImage');
 
     catImg.addEventListener('click', () => {
+      // Удаляем и заново добавляем класс для мгновенного повторного клика
+      catWidget.classList.remove('animate');
+      void catWidget.offsetWidth; // триггер ререндеринга
       catWidget.classList.add('animate');
+
+      // Скрываем Meow через 700ms
       clearTimeout(window.__meowTO);
       window.__meowTO = setTimeout(() => {
         catWidget.classList.remove('animate');
-      }, 900);
+      }, 700);
     });
   </script>
 </body>
