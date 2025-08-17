@@ -8,12 +8,16 @@
     :root{
       --cat-size: 110px;
       --cat-gap: 24px;
+      --social-size: 60px;
+      --social-gap: 20px;
     }
 
     @media (max-width: 600px){
       :root{
         --cat-size: 80px;
         --cat-gap: 16px;
+        --social-size: 45px;
+        --social-gap: 14px;
       }
     }
 
@@ -101,7 +105,7 @@
       z-index: 2;
     }
 
-    /* Котик фиксирован в левом нижнем углу */
+    /* Котик слева внизу */
     .cat-widget{
       position: fixed;
       left: var(--cat-gap);
@@ -150,7 +154,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Текст над котиком */
     .cat-text{
       font-size: 18px;
       font-weight: bold;
@@ -166,6 +169,42 @@
     @keyframes text-shimmer{
       0%{ background-position: 0% }
       100%{ background-position: 200% }
+    }
+
+    /* Соцсети справа внизу */
+    .social-widget{
+      position: fixed;
+      right: var(--social-gap);
+      bottom: var(--social-gap);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .social-img{
+      width: var(--social-size);
+      height: var(--social-size);
+      object-fit: contain;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform .15s ease;
+    }
+    .social-widget.animate .social-img{
+      animation: social-bounce .4s ease;
+    }
+    @keyframes social-bounce{
+      0%, 100%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+    }
+    .social-text{
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+      pointer-events: none;
+      margin-bottom: 4px;
     }
   </style>
 </head>
@@ -193,11 +232,17 @@
     </div>
   </div>
 
-  <!-- Кот и текст -->
+  <!-- Кот слева -->
   <div id="catWidget" class="cat-widget">
     <div class="cat-text">погладь меня</div>
     <img id="catImage" class="cat-img" alt="Кот" src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"/>
     <div class="meow-bubble">Meow</div>
+  </div>
+
+  <!-- Соцсети справа -->
+  <div id="socialWidget" class="social-widget">
+    <div class="social-text">Соцсети</div>
+    <img id="socialImage" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png"/>
   </div>
 
   <script>
@@ -210,20 +255,26 @@
       document.getElementById('welcome').classList.remove('hidden');
     }
 
+    // Котик
     const catWidget = document.getElementById('catWidget');
     const catImg = document.getElementById('catImage');
-
     catImg.addEventListener('click', () => {
-      // Удаляем и заново добавляем класс для мгновенного повторного клика
       catWidget.classList.remove('animate');
-      void catWidget.offsetWidth; // триггер ререндеринга
+      void catWidget.offsetWidth;
       catWidget.classList.add('animate');
-
-      // Скрываем Meow через 700ms
       clearTimeout(window.__meowTO);
-      window.__meowTO = setTimeout(() => {
-        catWidget.classList.remove('animate');
-      }, 700);
+      window.__meowTO = setTimeout(()=>catWidget.classList.remove('animate'), 700);
+    });
+
+    // Соцсети
+    const socialWidget = document.getElementById('socialWidget');
+    const socialImg = document.getElementById('socialImage');
+    socialImg.addEventListener('click', () => {
+      socialWidget.classList.remove('animate');
+      void socialWidget.offsetWidth;
+      socialWidget.classList.add('animate');
+      window.open('https://t.me/m000rrri','_blank');
+      setTimeout(()=>socialWidget.classList.remove('animate'), 500);
     });
   </script>
 </body>
