@@ -26,10 +26,16 @@
       z-index: 0;
     }
 
-    /* --- Экран приветствия и галерея поверх фона --- */
-    .screen, #gallery {
+    /* --- Экран приветствия --- */
+    .screen {
       position: relative;
-      z-index: 2; /* выше фона */
+      z-index: 2;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     .hidden {
@@ -82,7 +88,7 @@
       justify-content: center;
       margin: 30px 0;
       position: relative;
-      z-index: 3; /* ещё выше, чтобы точно была видна */
+      z-index: 3;
     }
 
     /* --- Для телефонов и планшетов --- */
@@ -106,7 +112,7 @@
   <!-- Приветственный экран -->
   <div id="welcome" class="screen">
     <h1 style="color:white; text-shadow: 2px 2px 6px black;">Добро пожаловать!</h1>
-    <button class="button" onclick="startGallery()">Открыть галерею</button>
+    <button class="button" onclick="startGallery()">Перейти в альбом Усти</button>
   </div>
 
   <!-- Галерея -->
