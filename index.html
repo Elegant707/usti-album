@@ -179,9 +179,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       z-index: 5;
       pointer-events: none;
+    }
+    .social-icons{
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
     }
     .social-img{
       width: var(--social-size);
@@ -204,7 +209,7 @@
       color: #fff;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
       pointer-events: none;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
   </style>
 </head>
@@ -242,7 +247,10 @@
   <!-- Соцсети справа -->
   <div id="socialWidget" class="social-widget">
     <div class="social-text">Соцсети</div>
-    <img id="socialImage" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png"/>
+    <div class="social-icons">
+      <img id="telegramIcon" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png"/>
+      <img id="tiktokIcon" class="social-img" alt="TikTok" src="https://i.postimg.cc/2SBGJCGm/tik-tok-logo-33095.png"/>
+    </div>
   </div>
 
   <script>
@@ -266,15 +274,16 @@
       window.__meowTO = setTimeout(()=>catWidget.classList.remove('animate'), 700);
     });
 
-    // Соцсети
-    const socialWidget = document.getElementById('socialWidget');
-    const socialImg = document.getElementById('socialImage');
-    socialImg.addEventListener('click', () => {
-      socialWidget.classList.remove('animate');
-      void socialWidget.offsetWidth;
-      socialWidget.classList.add('animate');
+    // Telegram
+    const telegramIcon = document.getElementById('telegramIcon');
+    telegramIcon.addEventListener('click', () => {
       window.open('https://t.me/m000rrri','_blank');
-      setTimeout(()=>socialWidget.classList.remove('animate'), 500);
+    });
+
+    // TikTok
+    const tiktokIcon = document.getElementById('tiktokIcon');
+    tiktokIcon.addEventListener('click', () => {
+      window.open('https://www.tiktok.com/@m000rrri','_blank');
     });
   </script>
 </body>
