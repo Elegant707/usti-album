@@ -1,221 +1,281 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сайт с галереей</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Альбом Усти</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
+    :root{
+      --cat-size: 110px;
+      --cat-gap: 24px;
+      --social-size: 60px;
+      --social-gap: 20px;
+    }
+
+    @media (max-width: 600px){
+      :root{
+        --cat-size: 80px;
+        --cat-gap: 16px;
+        --social-size: 45px;
+        --social-gap: 14px;
+      }
+    }
+
+    html, body{
+      margin:0; padding:0;
       font-family: Arial, sans-serif;
-      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') no-repeat center center fixed;
-      background-size: cover;
-      overflow-x: hidden;
     }
 
-    .overlay {
+    .background{
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(5px);
-      z-index: -1;
+      inset: 0;
+      background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') center/cover no-repeat;
+      filter: blur(4px);
+      z-index: 0;
     }
 
-    .container {
+    .screen{
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      padding: 20px;
-      color: white;
     }
 
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-    }
+    .hidden{ display:none; }
 
-    .btn {
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      border: none;
-      color: white;
+    .button{
       padding: 15px 30px;
-      font-size: 18px;
+      background: rgba(255,255,255,0.85);
+      border: 0;
       border-radius: 30px;
+      font-size: 20px;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 0.3s, background 0.3s;
-      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: .25s;
+      margin: 10px;
+    }
+    .button:hover{
+      transform: scale(1.06);
+      background: linear-gradient(90deg,#7dd3fc,#c4b5fd);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
 
-    .btn:hover {
-      transform: scale(1.1);
-      background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    #gallery{
+      position: relative;
+      z-index: 2;
+      padding-left: calc(var(--cat-size) + var(--cat-gap));
+      padding-bottom: calc(var(--cat-size) + var(--cat-gap));
     }
 
-    .gallery {
-      display: none;
+    .photo-container{
+      width: 95%;
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      padding: 20px;
+      gap: 20px;
+      padding: 30px 30px 10px;
+      justify-items: center;
     }
-
-    .gallery img {
+    .photo-container img{
       width: 100%;
+      max-width: 350px;
       border-radius: 15px;
-      transition: transform 0.3s;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      object-fit: cover;
+    }
+    @media (max-width: 900px){
+      .photo-container{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px){
+      .photo-container{ grid-template-columns: 1fr; }
     }
 
-    .gallery img:hover {
-      transform: scale(1.05);
-    }
-
-    .back-btn {
-      display: block;
-      margin: 20px auto;
-      background: linear-gradient(45deg, #1d976c, #93f9b9);
-      border: none;
-      color: white;
-      padding: 12px 25px;
-      font-size: 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: transform 0.3s, background 0.3s;
+    .back-button-container{
+      display: flex;
+      justify-content: center;
+      margin: 24px 0 32px;
       position: relative;
       z-index: 2;
     }
 
-    .back-btn:hover {
-      transform: scale(1.1);
-      background: linear-gradient(45deg, #93f9b9, #1d976c);
-    }
-
-    /* Котик */
-    .cat-container {
+    /* Котик слева внизу */
+    .cat-widget{
       position: fixed;
-      bottom: 10px;
-      left: 20px;
-      text-align: center;
+      left: var(--cat-gap);
+      bottom: var(--cat-gap);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       z-index: 5;
+      pointer-events: none;
     }
-
-    .cat-container img {
-      width: 100px;
-      border-radius: 15px;
+    .cat-img{
+      width: var(--cat-size);
+      height: var(--cat-size);
+      object-fit: contain;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
       cursor: pointer;
-      transition: transform 0.2s;
+      pointer-events: auto;
+      transition: transform .15s ease;
+      user-select: none;
+    }
+    .cat-widget.animate .cat-img{
+      animation: cat-bounce .6s ease;
+    }
+    @keyframes cat-bounce{
+      0%{ transform: translateY(0) rotate(0deg) }
+      30%{ transform: translateY(-10px) rotate(-4deg) }
+      60%{ transform: translateY(0) rotate(2deg) }
+      100%{ transform: translateY(0) rotate(0deg) }
     }
 
-    .cat-container img:active {
-      transform: scale(1.2);
+    .meow-bubble{
+      white-space: nowrap;
+      background: rgba(255,255,255,0.92);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      transform: translateY(8px) scale(.95);
+      opacity: 0;
+      transition: .15s ease;
+      pointer-events: none;
+    }
+    .cat-widget.animate .meow-bubble{
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
-    .cat-text {
-      font-size: 20px;
-      font-weight: bold;
-      color: #ffccff;
-      text-shadow: 0 0 10px #ff66cc;
-      margin-bottom: 5px;
-      animation: glow 2s infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #ff66cc; }
-      to { text-shadow: 0 0 20px #ff3399; }
-    }
-
-    .meow-text {
+    .cat-text{
       font-size: 18px;
       font-weight: bold;
-      color: yellow;
-      margin-top: 5px;
-      display: none;
+      background: linear-gradient(90deg, #7dd3fc, #c4b5fd, #f5a7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: text-shimmer 3s linear infinite;
+      user-select: none;
+      pointer-events: none;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    @keyframes text-shimmer{
+      0%{ background-position: 0% }
+      100%{ background-position: 200% }
     }
 
-    /* Соцсети */
-    .social-container {
+    /* Соцсети справа внизу */
+    .social-widget{
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      right: var(--social-gap);
+      bottom: var(--social-gap);
       display: flex;
-      gap: 15px;
+      flex-direction: column;
       align-items: center;
+      gap: 4px;
       z-index: 5;
+      pointer-events: none;
     }
-
-    .social-container img {
-      width: 50px;
+    .social-img{
+      width: var(--social-size);
+      height: var(--social-size);
+      object-fit: contain;
       cursor: pointer;
-      transition: transform 0.3s;
+      pointer-events: auto;
+      transition: transform .15s ease;
     }
-
-    .social-container img:hover {
-      transform: scale(1.2);
+    .social-widget.animate .social-img{
+      animation: social-bounce .4s ease;
     }
-
-    .social-text {
-      position: absolute;
-      bottom: 70px;
-      right: 50%;
-      transform: translateX(50%);
-      font-size: 20px;
+    @keyframes social-bounce{
+      0%, 100%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+    }
+    .social-text{
+      font-size: 14px;
       font-weight: bold;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00cccc;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+      pointer-events: none;
+      margin-bottom: 4px;
     }
-
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  
-  <div class="container" id="main">
-    <h1>Добро пожаловать!</h1>
-    <button class="btn" onclick="openGallery()">Перейти в альбом Усти</button>
+  <div class="background"></div>
+
+  <div id="welcome" class="screen">
+    <h1 style="color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,.7); margin-bottom:14px;">
+      Добро пожаловать!
+    </h1>
+    <button class="button" onclick="startGallery()">Перейти в альбом Усти</button>
   </div>
 
-  <div class="gallery" id="gallery">
-    <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
-    <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото 2">
-    <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
-    <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
-    <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
-    <button class="back-btn" onclick="goBack()">Вернуться назад</button>
+  <div id="gallery" class="hidden">
+    <div class="photo-container">
+      <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
+      <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото 2">
+      <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
+      <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
+      <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
+    </div>
+
+    <div class="back-button-container">
+      <button class="button" onclick="goBack()">Вернуться назад</button>
+    </div>
   </div>
 
-  <!-- Котик -->
-  <div class="cat-container" onclick="meow()">
-    <div class="cat-text">Погладь меня</div>
-    <img src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg" alt="Котик">
-    <div class="meow-text" id="meowText">Meow</div>
+  <!-- Кот слева -->
+  <div id="catWidget" class="cat-widget">
+    <div class="cat-text">погладь меня</div>
+    <img id="catImage" class="cat-img" alt="Кот" src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"/>
+    <div class="meow-bubble">Meow</div>
   </div>
 
-  <!-- Соцсети -->
-  <div class="social-container">
+  <!-- Соцсети справа -->
+  <div id="socialWidget" class="social-widget">
     <div class="social-text">Соцсети</div>
-    <a href="https://t.me/m000rrri" target="_blank">
-      <img src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png" alt="Telegram">
-    </a>
-    <a href="https://www.tiktok.com/@m000rrri" target="_blank">
-      <img src="https://i.postimg.cc/2SBGJCGm/tik-tok-logo-33095.png" alt="TikTok">
-    </a>
+    <img id="socialImage" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png"/>
   </div>
 
   <script>
-    function openGallery() {
-      document.getElementById("main").style.display = "none";
-      document.getElementById("gallery").style.display = "grid";
+    function startGallery(){
+      document.getElementById('welcome').classList.add('hidden');
+      document.getElementById('gallery').classList.remove('hidden');
+    }
+    function goBack(){
+      document.getElementById('gallery').classList.add('hidden');
+      document.getElementById('welcome').classList.remove('hidden');
     }
 
-    function goBack() {
-      document.getElementById("gallery").style.display = "none";
-      document.getElementById("main").style.display = "block";
-    }
+    // Котик
+    const catWidget = document.getElementById('catWidget');
+    const catImg = document.getElementById('catImage');
+    catImg.addEventListener('click', () => {
+      catWidget.classList.remove('animate');
+      void catWidget.offsetWidth;
+      catWidget.classList.add('animate');
+      clearTimeout(window.__meowTO);
+      window.__meowTO = setTimeout(()=>catWidget.classList.remove('animate'), 700);
+    });
 
-    function meow() {
-      let meowText = document.getElementById("meowText");
-      meowText.style.display = "block";
-      setTimeout(() => { meowText.style.display = "none"; }, 500);
-    }
+    // Соцсети
+    const socialWidget = document.getElementById('socialWidget');
+    const socialImg = document.getElementById('socialImage');
+    socialImg.addEventListener('click', () => {
+      socialWidget.classList.remove('animate');
+      void socialWidget.offsetWidth;
+      socialWidget.classList.add('animate');
+      window.open('https://t.me/m000rrri','_blank');
+      setTimeout(()=>socialWidget.classList.remove('animate'), 500);
+    });
   </script>
 </body>
 </html>
