@@ -2,209 +2,164 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Альбом Усти</title>
   <style>
-    :root{
+    :root {
       --cat-size: 110px;
       --cat-gap: 24px;
       --social-size: 60px;
       --social-gap: 20px;
+      --tiktok-size: 60px;
+      --tiktok-gap-bottom: 130px; /* чуть выше котика */
+      --tiktok-gap-left: 24px;
     }
 
-    @media (max-width: 600px){
-      :root{
+    @media (max-width: 600px) {
+      :root {
         --cat-size: 80px;
         --cat-gap: 16px;
         --social-size: 45px;
         --social-gap: 14px;
+        --tiktok-size: 45px;
+        --tiktok-gap-bottom: 100px;
       }
     }
 
-    html, body{
-      margin:0; padding:0;
-      font-family: Arial, sans-serif;
-    }
+    *,body,html{ margin:0; padding:0; font-family: Arial, sans-serif; }
 
-    .background{
-      position: fixed;
-      inset: 0;
+    .background {
+      position: fixed; inset:0;
       background: url('https://i.postimg.cc/SRG2Q0v1/Snowing.jpg') center/cover no-repeat;
       filter: blur(4px);
-      z-index: 0;
+      z-index:0;
     }
 
-    .screen{
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+    .screen {
+      position: relative; z-index:2;
+      min-height:100vh;
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      text-align:center;
     }
 
-    .hidden{ display:none; }
+    h1 { color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,.7); margin-bottom:14px; }
 
-    .button{
-      padding: 15px 30px;
-      background: rgba(255,255,255,0.85);
-      border: 0;
-      border-radius: 30px;
-      font-size: 20px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: .25s;
-      margin: 10px;
+    .button {
+      padding:15px 30px; background: rgba(255,255,255,0.85);
+      border:none; border-radius:30px;
+      font-size:20px; font-weight:700;
+      cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3);
+      transition:.25s; margin:10px;
     }
-    .button:hover{
-      transform: scale(1.06);
-      background: linear-gradient(90deg,#7dd3fc,#c4b5fd);
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    .button:hover {
+      transform:scale(1.06);
+      background:linear-gradient(90deg,#7dd3fc,#c4b5fd);
+      color:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,0.45);
     }
 
-    #gallery{
-      position: relative;
-      z-index: 2;
-      padding-left: calc(var(--cat-size) + var(--cat-gap));
-      padding-bottom: calc(var(--cat-size) + var(--cat-gap));
+    #gallery {
+      position:relative; z-index:2;
+      padding-left:calc(var(--cat-size)+var(--cat-gap));
+      padding-bottom:calc(var(--cat-size)+var(--cat-gap));
     }
 
-    .photo-container{
-      width: 95%;
-      max-width: 1300px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 30px 30px 10px;
-      justify-items: center;
+    .photo-container {
+      width:95%; max-width:1300px; margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+      padding:30px 30px 10px;
+      justify-items:center;
     }
-    .photo-container img{
-      width: 100%;
-      max-width: 350px;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-      object-fit: cover;
+    .photo-container img {
+      width:100%; max-width:350px;
+      border-radius:15px;
+      box-shadow:0 8px 25px rgba(0,0,0,0.5);
+      object-fit:cover;
     }
-    @media (max-width: 900px){
-      .photo-container{ grid-template-columns: repeat(2, 1fr); }
+    @media (max-width:900px) { .photo-container { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:600px) { .photo-container { grid-template-columns:1fr; } }
+
+    .back-button-container { display:flex; justify-content:center; margin:24px 0 32px; position:relative; z-index:2; }
+
+    /* Котик слева */
+    .cat-widget {
+      position:fixed; left:var(--cat-gap); bottom:var(--cat-gap);
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      z-index:5; pointer-events:none;
     }
-    @media (max-width: 600px){
-      .photo-container{ grid-template-columns: 1fr; }
+    .cat-img {
+      width:var(--cat-size); height:var(--cat-size);
+      object-fit:contain;
+      filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));
+      cursor:pointer; pointer-events:auto;
+      transition:transform .15s ease; user-select:none;
+    }
+    @keyframes cat-bounce { 0%,100%{transform:translateY(0) rotate(0);} 30%{transform:translateY(-10px) rotate(-4deg);} 60%{transform:translateY(0) rotate(2deg);} }
+    .cat-widget.animate .cat-img { animation:cat-bounce .6s ease; }
+
+    .meow-bubble {
+      white-space:nowrap;
+      background:rgba(255,255,255,0.92);
+      border-radius:12px; padding:8px 12px; font-weight:700;
+      box-shadow:0 6px 18px rgba(0,0,0,0.25);
+      transform:translateY(8px) scale(.95);
+      opacity:0; transition:.15s ease; pointer-events:none;
+    }
+    .cat-widget.animate .meow-bubble { opacity:1; transform:translateY(0) scale(1); }
+
+    .cat-text {
+      font-size:18px; font-weight:bold;
+      background:linear-gradient(90deg,#7dd3fc,#c4b5fd,#f5a7ff);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      animation:text-shimmer 3s linear infinite;
+      user-select:none; pointer-events:none;
+      margin-bottom:4px; text-align:center;
+    }
+    @keyframes text-shimmer { 0%{ background-position:0% } 100%{ background-position:200% } }
+
+    /* Telegram справа */
+    .social-widget {
+      position:fixed; right:var(--social-gap); bottom:var(--social-gap);
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      z-index:5; pointer-events:none;
+    }
+    .social-img {
+      width:var(--social-size); height:var(--social-size);
+      object-fit:contain; cursor:pointer; pointer-events:auto;
+      transition:transform .15s ease;
+    }
+    .social-widget.animate .social-img {
+      animation: social-bounce 0.4s ease;
+    }
+    @keyframes social-bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+
+    .social-text {
+      font-size:14px; font-weight:bold;
+      color:#fff; text-shadow:1px 1px 4px rgba(0,0,0,0.5);
+      pointer-events:none; margin-bottom:4px;
     }
 
-    .back-button-container{
-      display: flex;
-      justify-content: center;
-      margin: 24px 0 32px;
-      position: relative;
-      z-index: 2;
+    /* TikTok слева чуть выше */
+    .tiktok-widget {
+      position:fixed; left:var(--tiktok-gap-left); bottom:var(--tiktok-gap-bottom);
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      z-index:5; pointer-events:none;
     }
-
-    /* Котик слева внизу */
-    .cat-widget{
-      position: fixed;
-      left: var(--cat-gap);
-      bottom: var(--cat-gap);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      z-index: 5;
-      pointer-events: none;
+    .tiktok-img {
+      width:var(--tiktok-size); height:var(--tiktok-size);
+      object-fit:contain; cursor:pointer; pointer-events:auto;
+      transition:transform .15s ease;
     }
-    .cat-img{
-      width: var(--cat-size);
-      height: var(--cat-size);
-      object-fit: contain;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
-      cursor: pointer;
-      pointer-events: auto;
-      transition: transform .15s ease;
-      user-select: none;
+    .tiktok-widget.animate .tiktok-img {
+      animation: social-bounce 0.4s ease;
     }
-    .cat-widget.animate .cat-img{
-      animation: cat-bounce .6s ease;
-    }
-    @keyframes cat-bounce{
-      0%{ transform: translateY(0) rotate(0deg) }
-      30%{ transform: translateY(-10px) rotate(-4deg) }
-      60%{ transform: translateY(0) rotate(2deg) }
-      100%{ transform: translateY(0) rotate(0deg) }
-    }
-
-    .meow-bubble{
-      white-space: nowrap;
-      background: rgba(255,255,255,0.92);
-      border-radius: 12px;
-      padding: 8px 12px;
-      font-weight: 700;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-      transform: translateY(8px) scale(.95);
-      opacity: 0;
-      transition: .15s ease;
-      pointer-events: none;
-    }
-    .cat-widget.animate .meow-bubble{
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .cat-text{
-      font-size: 18px;
-      font-weight: bold;
-      background: linear-gradient(90deg, #7dd3fc, #c4b5fd, #f5a7ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: text-shimmer 3s linear infinite;
-      user-select: none;
-      pointer-events: none;
-      margin-bottom: 4px;
-      text-align: center;
-    }
-    @keyframes text-shimmer{
-      0%{ background-position: 0% }
-      100%{ background-position: 200% }
-    }
-
-    /* Соцсети справа внизу */
-    .social-widget{
-      position: fixed;
-      right: var(--social-gap);
-      bottom: var(--social-gap);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      z-index: 5;
-      pointer-events: none;
-    }
-    .social-img{
-      width: var(--social-size);
-      height: var(--social-size);
-      object-fit: contain;
-      cursor: pointer;
-      pointer-events: auto;
-      transition: transform .15s ease;
-    }
-    .social-widget.animate .social-img{
-      animation: social-bounce .4s ease;
-    }
-    @keyframes social-bounce{
-      0%, 100%{ transform: translateY(0) }
-      50%{ transform: translateY(-6px) }
-    }
-    .social-text{
-      font-size: 14px;
-      font-weight: bold;
-      color: #fff;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-      pointer-events: none;
-      margin-bottom: 4px;
+    .tiktok-text {
+      font-size:14px; font-weight:bold;
+      color:#fff; text-shadow:1px 1px 4px rgba(0,0,0,0.5);
+      pointer-events:none; margin-bottom:4px;
     }
   </style>
 </head>
@@ -212,37 +167,41 @@
   <div class="background"></div>
 
   <div id="welcome" class="screen">
-    <h1 style="color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,.7); margin-bottom:14px;">
-      Добро пожаловать!
-    </h1>
+    <h1>Добро пожаловать!</h1>
     <button class="button" onclick="startGallery()">Перейти в альбом Усти</button>
   </div>
 
   <div id="gallery" class="hidden">
     <div class="photo-container">
-      <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="Фото 1">
-      <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="Фото 2">
-      <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="Фото 3">
-      <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="Фото 4">
-      <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="Фото 5">
+      <!-- твои фото -->
+      <img src="https://i.postimg.cc/D0DVX0HS/photo-2025-06-01-22-29-13-2.jpg" alt="">
+      <img src="https://i.postimg.cc/wjzzcy3N/photo-2025-04-14-02-31-13.jpg" alt="">
+      <img src="https://i.postimg.cc/SRc5Jd6v/mollygram-com-Instagram-Post-mmoooorrii-3504287078387606675.jpg" alt="">
+      <img src="https://i.postimg.cc/g0rTvmyR/photo-2025-05-05-00-17-32-2.jpg" alt="">
+      <img src="https://i.postimg.cc/Vv9GY61y/photo-2024-09-07-01-27-00.jpg" alt="">
     </div>
-
     <div class="back-button-container">
       <button class="button" onclick="goBack()">Вернуться назад</button>
     </div>
   </div>
 
-  <!-- Кот слева -->
+  <!-- Котик -->
   <div id="catWidget" class="cat-widget">
     <div class="cat-text">погладь меня</div>
-    <img id="catImage" class="cat-img" alt="Кот" src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg"/>
+    <img id="catImage" class="cat-img" alt="Кот" src="https://i.postimg.cc/gk9YwQhM/photo-2025-01-07-23-00-47.jpg">
     <div class="meow-bubble">Meow</div>
   </div>
 
-  <!-- Соцсети справа -->
+  <!-- Соцсети (Telegram) справа -->
   <div id="socialWidget" class="social-widget">
     <div class="social-text">Соцсети</div>
-    <img id="socialImage" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png"/>
+    <img id="socialImage" class="social-img" alt="Telegram" src="https://i.postimg.cc/mr8Tnrtk/telegram-4423663.png">
+  </div>
+
+  <!-- TikTok слева -->
+  <div id="tiktokWidget" class="tiktok-widget">
+    <div class="tiktok-text">TikTok</div>
+    <img id="tiktokImage" class="tiktok-img" alt="TikTok" src="https://i.postimg.cc/2SBGJCGm/tik-tok-logo-33095.png">
   </div>
 
   <script>
@@ -258,23 +217,34 @@
     // Котик
     const catWidget = document.getElementById('catWidget');
     const catImg = document.getElementById('catImage');
-    catImg.addEventListener('click', () => {
+    catImg.addEventListener('click', ()=>{
       catWidget.classList.remove('animate');
       void catWidget.offsetWidth;
       catWidget.classList.add('animate');
       clearTimeout(window.__meowTO);
-      window.__meowTO = setTimeout(()=>catWidget.classList.remove('animate'), 700);
+      window.__meowTO = setTimeout(()=>catWidget.classList.remove('animate'),700);
     });
 
-    // Соцсети
+    // Telegram
     const socialWidget = document.getElementById('socialWidget');
     const socialImg = document.getElementById('socialImage');
-    socialImg.addEventListener('click', () => {
+    socialImg.addEventListener('click', ()=>{
       socialWidget.classList.remove('animate');
       void socialWidget.offsetWidth;
       socialWidget.classList.add('animate');
       window.open('https://t.me/m000rrri','_blank');
-      setTimeout(()=>socialWidget.classList.remove('animate'), 500);
+      setTimeout(()=>socialWidget.classList.remove('animate'),500);
+    });
+
+    // TikTok
+    const tiktokWidget = document.getElementById('tiktokWidget');
+    const tiktokImg = document.getElementById('tiktokImage');
+    tiktokImg.addEventListener('click', ()=>{
+      tiktokWidget.classList.remove('animate');
+      void tiktokWidget.offsetWidth;
+      tiktokWidget.classList.add('animate');
+      window.open('https://www.tiktok.com/@m000rrri','_blank');
+      setTimeout(()=>tiktokWidget.classList.remove('animate'),500);
     });
   </script>
 </body>
